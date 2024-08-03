@@ -26,27 +26,15 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">Top 20</h5>
                 </div>
-                <ul class="list-group list-group-flush">
-                    @foreach($tops as $user)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <img width="60px" src="{{asset((!$user->country->flag) ? 'flags/img.png' : 'flags/'.$user->country->flag.'.svg')}}">
-                                {{$user->name}}
-                            </div>
-                            <div>
-                                IQ {{$user->score}}<br><small>{{$user->created}}</small>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+                @include('parts.tops', ['tops' => $tops])
             </div>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-md-9 mt-4 mt-md-0">
             <div class="card p-2">
                 <div id="startButton" class="text-center">
                     @if(session()->has('username'))
-                        <div class="alert alert-info text-lg-center">
+                        <div class="alert alert-info text-center">
                             <p>Congratulations {{session('username')}}!</p>
                             <p>You scored {{session('score')}}.</p>
                         </div>
@@ -63,16 +51,16 @@
                                     <div class="question" data-question-index="{{ $index }}" style="{{ $index > 0 ? 'display:none;' : '' }}">
                                         <div class="d-flex justify-content-center mb-3">
                                             <div class="p-2">
-                                                <img style="height: 30vh; max-width: 100%" src="{{ asset($question->body) }}" alt="Figure">
+                                                <img style="max-height: 300px; max-width: 100%" src="{{ asset($question->body) }}" alt="Figure">
                                             </div>
                                         </div>
                                         <div class="row pb-4">
                                             @foreach($question->options as $i => $v)
-                                                <div class="col-md-4 col-6">
+                                                <div class="col-4">
                                                     <div class="p-2">
                                                         <input type="radio" name="answer_{{ $index }}" id="option_{{ $index }}_{{ $i }}" class="d-none">
                                                         <label onclick="selected({{$index}}, {{$i}})" for="option_{{ $index }}_{{ $i }}">
-                                                            <img style="height: 90px; width: 90px" src="{{ asset($v) }}" alt="Option" class="img-fluid">
+                                                            <img style="width: 80px" src="{{ asset($v) }}" alt="Option" class="img-fluid">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -81,7 +69,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="d-flex justify-content-around">
+                            <div class="d-flex justify-content-around mt-md-5">
                                 <div>
                                     <button type="button" id="prev-button" class="btn btn-outline-light">
                                         <img width="20px" src="{{asset('icons/left.svg')}}" alt="">
@@ -175,18 +163,7 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">Recent 20</h5>
                 </div>
-                <ul class="list-group list-group-flush">
-                    @foreach($users as $user)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <img width="60px" src="{{asset((!$user->country->flag) ? 'flags/img.png' : 'flags/'.$user->country->flag.'.svg')}}"> {{$user->name}}
-                            </div>
-                            <div>
-                                IQ {{$user->score}}<br><small>{{$user->created}}</small>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+                @include('parts.tops', ['tops' => $users])
             </div>
         </div>
     </div>

@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function getCreatedAttribute()
     {
-        return Carbon::make($this->created_at)->toDateTimeString();
+        return Carbon::parse($this->created_at)->format('d/m/Y H:i:s');
     }
 }
