@@ -44,6 +44,12 @@
         <div class="col-md-9">
             <div class="card p-2">
                 <div id="startButton" class="text-center">
+                    @if(session()->has('username'))
+                        <div class="alert alert-info text-lg-center">
+                            <p>Congratulations {{session('username')}}!</p>
+                            <p>You scored {{session('score')}}.</p>
+                        </div>
+                    @endif
                     <button class="btn btn-outline-dark">Start</button>
                 </div>
                 <div>
@@ -94,7 +100,7 @@
                             </div>
                             <div class="p-2">
                                 <label for="ageInput" class="form-label">Age</label>
-                                <input type="number" class="form-control" id="ageInput" name="age" required>
+                                <input type="number" class="form-control" id="ageInput" name="age" min="1" required>
                             </div>
                             <div class="p-2">
                                 <label for="emailInput" class="form-label">Email</label>
@@ -161,7 +167,7 @@
         </div>
 
     </div>
-    <div class="row mt-4">
+    <div class="row my-4">
 
         <div class="col-md-3">
             <div class="card">
@@ -226,7 +232,7 @@
     function stopDefAction(evt) {
         evt.preventDefault();
         document.getElementById('timeInput').value = localStorage.getItem('end') - localStorage.getItem('started')
-        document.getElementById('qsInput').value = localStorage.getItem('q')
+        document.getElementById('qsInput').value = localStorage.getItem('q') ?? '[null]'
         document.getElementById("submitForm").click()
     }
     document.getElementById("buttonForm").addEventListener("click", stopDefAction, false);

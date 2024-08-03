@@ -11,6 +11,7 @@ use App\Models\University;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class TestController extends Controller
 {
@@ -33,6 +34,8 @@ class TestController extends Controller
         $qs = $data['qs'];
         unset($data['qs']);
         $data['score'] = $this->score($data['time'], $qs);
+
+        session(['score' => $data['score'], 'username' => $data['name']]);
         $data['password'] = Hash::make('123456789');
         User::create($data);
         return redirect()->route('test');
@@ -43,7 +46,7 @@ class TestController extends Controller
         $corrects = 0;
         $questions = Question::all();
         foreach ($questions as $index => $question) {
-            $userAnswer = $qs[$index];
+            $userAnswer = $qs[$index] ?? null;
             if ($userAnswer == $question->answer) {
                 $score += $question->score;
                 $corrects++;
