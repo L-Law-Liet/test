@@ -30,7 +30,8 @@
                     @foreach($tops as $user)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <img src="{{$user->country->flag}}"> {{$user->name}}
+                                <img width="60px" src="{{asset((!$user->country->flag) ? 'flags/img.png' : 'flags/'.$user->country->flag.'.svg')}}">
+                                {{$user->name}}
                             </div>
                             <div>
                                 IQ {{$user->score}}<br><small>{{$user->created}}</small>
@@ -178,7 +179,7 @@
                     @foreach($users as $user)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <img src="{{$user->country->flag}}"> {{$user->name}}
+                                <img width="60px" src="{{asset((!$user->country->flag) ? 'flags/img.png' : 'flags/'.$user->country->flag.'.svg')}}"> {{$user->name}}
                             </div>
                             <div>
                                 IQ {{$user->score}}<br><small>{{$user->created}}</small>

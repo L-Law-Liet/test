@@ -41,38 +41,46 @@ class TestController extends Controller
         return redirect()->route('test');
     }
 
-    private function score(int $time, array $qs) {
+    private function score(int $time, array $qs): int
+    {
         $score = 90;
         $corrects = 0;
+        $net = 90;
         $questions = Question::all();
         foreach ($questions as $index => $question) {
             $userAnswer = $qs[$index] ?? null;
             if ($userAnswer == $question->answer) {
                 $score += $question->score;
+                $net += $question->score;
                 $corrects++;
             } else {
-                $score -= ($question->score * 1.2 + (6 - $question->score / 2) );
+                $score -= ($question->score * 1.5 + (6 - $question->score / 2) );
             }
         }
         $limit = 30*60*1000;
         if ($time > $limit) {
-            $penalty = min(30, (($time - $limit) / $limit));
+            $penalty = min(30, 15 * (($time - $limit) / $limit));
             $score -= $penalty;
         }
         if ($score < 70) {
             if ($corrects > 30) {
-                $score = 110 - rand(1, 9);
+                $score = 100 + $this->red($net);
             } elseif ($corrects > 25) {
-                $score = 100 - rand(1, 9);
+                $score = 90 + $this->red($net);
             } elseif($corrects > 20) {
-                $score = 90 - rand(1, 9);
+                $score = 80 + $this->red($net);
             } elseif($corrects > 10) {
-                $score = 80 - rand(1, 9);
+                $score = 70 + $this->red($net);
             }
         }
         if ($score < 60) {
             $score = 60;
         }
-        return $score;
+        return (int) $score;
+    }
+
+    private function red($net)
+    {
+        return 15 * $net / 200;
     }
 }
